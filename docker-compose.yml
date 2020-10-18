@@ -1,0 +1,32 @@
+version: '2.1'
+services:
+    postgres:
+        image: postgres:latest
+        restart: always
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+    webserver:
+        image: puckel/docker-airflow:latest
+        restart: always
+        environment:
+            - EXECUTOR=Local
+            - FERNET_KEY=4zAMkgpACnDpAZ3k8MlLSF8mPposKBdgkzrGg2PBYAY=
+        ports:
+            - "8080:8080"
+        command: webserver
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+
+    scheduler:
+        image: puckel/docker-airflow:latest
+        restart: always
+        environment:
+            - EXECUTOR=Local
+            - FERNET_KEY=4zAMkgpACnDpAZ3k8MlLSF8mPposKBdgkzrGg2PBYAY=
+        volumes:
+            - ./logs:/usr/local/airflow/logs
+            - ./dags:/usr/local/airflow/dags
+        command: scheduler
+
