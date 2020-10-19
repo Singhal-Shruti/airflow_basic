@@ -10,6 +10,8 @@ services:
     webserver:
         image: puckel/docker-airflow:latest
         restart: always
+        depends_on:
+            - postgres
         environment:
             - EXECUTOR=Local
             - FERNET_KEY=4zAMkgpACnDpAZ3k8MlLSF8mPposKBdgkzrGg2PBYAY=
@@ -18,10 +20,14 @@ services:
         command: webserver
         volumes:
             - ./dags:/usr/local/airflow/dags
+            - ./logs:/usr/local/airflow/logs
+            - ./logs/webserver:/usr/local/airflow/logs/webserver
 
     scheduler:
         image: puckel/docker-airflow:latest
         restart: always
+        depends_on:
+            - postgres
         environment:
             - EXECUTOR=Local
             - FERNET_KEY=4zAMkgpACnDpAZ3k8MlLSF8mPposKBdgkzrGg2PBYAY=
@@ -29,4 +35,3 @@ services:
             - ./logs:/usr/local/airflow/logs
             - ./dags:/usr/local/airflow/dags
         command: scheduler
-

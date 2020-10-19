@@ -14,7 +14,7 @@ default_args = {
     'retry_delay': timedelta(minutes=2),
 }
 
-dag = DAG('HelloWorld', default_args=default_args, schedule_interval=@hourly, catchup=False)
+dag = DAG('HelloWorld', default_args=default_args, schedule_interval='@hourly', catchup=False)
 
 t1 = BashOperator(
     task_id='task_1',
